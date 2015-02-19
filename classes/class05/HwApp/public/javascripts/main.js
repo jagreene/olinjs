@@ -1,6 +1,3 @@
-var $loginBtn = $("#Login");
-var $logoutBtn = $('#Logout');
-var $loginForm = $('.login-form');
 var $tvveetForm = $('.tvveet-form');
 var $tvveetsGroup = $('.tvveet');
 var $usersGroup = $('.user-btn');
@@ -8,6 +5,17 @@ var $usersGroup = $('.user-btn');
 var user_id = $tvveetForm.attr('user_id');
 console.log($usersGroup);
 $.material.init();
+
+function enable_deletes (){
+    $tvveetsGroup.each(function (){
+        var $tvveet = $(this);
+        console.log($tvveet.attr('author_id'));
+        if($tvveet.attr('author_id') == user_id){
+            $tvveet.find('button').prop('disabled', false);
+            console.log('Our users got a tvveet');   
+        }
+    })
+}
 
 var deleteTvveet = function (event){
     event.preventDefault();
@@ -24,57 +32,8 @@ var deleteTvveet = function (event){
     });
 }
 
+enable_deletes();
 $tvveetsGroup.submit(deleteTvveet);
-
-$loginBtn.click(function (event){
-    $.get("/login")
-    .done(function (data, status){
-        console.log(data);
-        document.open();
-        document.write(data);
-        document.close();
-    })
-    .error(function (data, status){
-        console.log(status);
-        console.log(data);  
-    });
-});
-
-$logoutBtn.click(function (event){
-    $.get("/")
-    .done(function (data, status){
-        console.log(data);
-        document.open();
-        document.write(data);
-        document.close();
-    })
-    .error(function (data, status){
-        console.log(status);
-        console.log(data);  
-    });
-});
-
-$loginForm.submit(function (event){
-    event.preventDefault()
-    console.log($loginForm);
-    var name = $loginForm.find("[name='name']").val();
-    var formData = {
-        name : name,
-    };
-
-    console.log(formData);
-    $.post("/login", formData)
-    .done(function (data, status){
-        console.log(data);
-        document.open();
-        document.write(data);
-        document.close();
-    })
-    .error(function (data, status){
-        console.log(status);
-        console.log(data);  
-    });
-});
 
 $tvveetForm.submit(function (event){
     event.preventDefault();
@@ -101,14 +60,13 @@ $tvveetForm.submit(function (event){
         $tvveetsGroup = $('.tvveet');
         $tvveetsGroup.unbind();
         $tvveetsGroup.submit(deleteTvveet);
+        enable_deletes();    
     })
     .error(function (data, status){
         console.log(status);
         console.log(data);  
     });
 })
-
-
 
 $usersGroup.click(function (){
     var $user_btn = $(this);
@@ -126,14 +84,5 @@ $usersGroup.click(function (){
             $tvveet.closest('.well').css("background-color", "#FFF");
         }
     });
-})
-
-$tvveetsGroup.each(function (){
-    var $tvveet = $(this);
-    console.log($tvveet.attr('author_id'));
-    if($tvveet.attr('author_id') == user_id){
-        $tvveet.find('button').prop('disabled', false);
-        console.log('Our users got a tvveet');   
-    }
 })
 

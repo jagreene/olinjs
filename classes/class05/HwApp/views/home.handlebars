@@ -7,9 +7,9 @@
          </div>
          <div class="login-col">
              {{#if current_user}}
-                <button class="btn btn-primary" id="Logout">Log Out</button>
+                <a href="/logout"  class="btn btn-primary" role="button">Log Out</a>
              {{else}}
-                <button class="btn btn-primary" id="Login">Log In</button>
+                <a href='/auth/facebook' class="btn btn-primary" role="button">Log In</a>
              {{/if}}
          </div>
      </div>
